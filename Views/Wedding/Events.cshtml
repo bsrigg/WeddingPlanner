@@ -1,0 +1,47 @@
+
+<table class="table table-striped">
+    <tr>
+        <th>Wedding Name</th>
+        <th>Wedding Date</th>
+        <th>Guests</th>
+        <th>Action</th>
+    </tr>
+    @foreach (var e in ViewBag.Events)
+    {
+        <tr>
+            <td>@e.Partner1 & @e.Partner2's Wedding</td>
+            <td>@e.CeremonyDate.ToString("MMMM dd, yyyy")</td>
+            <td>@e.Event.Count</td>
+            <td>
+                @{
+                    bool isGoing = false;
+                    foreach(var guest in e.Event)
+                    {
+                        if(guest.UserId == ViewBag.User.UserId)
+                        {
+                            isGoing = true;
+                            break;
+                        }
+                    }
+                    if(e.PlannerId == ViewBag.User.UserId)
+                    {
+                        <form action="/delete/@e.WeddingId" method="post">
+                            <input type="submit" value="Delete" class="btn btn-danger btn-xs" />
+                        </form>
+                    }
+                    else if(isGoing)
+                    {
+                        <a href="/leave/@e.WeddingId" class="btn btn-warning btn-xs">Un-RSVP</a> 
+                    }
+                    else
+                    {
+                        <a href="/join/@e.WeddingId" class="btn btn-primary btn-xs">RSVP</a>   
+                    }
+                }
+            </td>
+        </tr>
+    }
+</table>
+
+
+<a href="/events/new" class="btn btn-info">New Wedding</a>

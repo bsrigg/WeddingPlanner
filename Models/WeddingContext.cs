@@ -40,6 +40,11 @@ namespace WeddingPlanner.Models
         {
             return Weddings.Where(w => w.WeddingId == WeddingId).FirstOrDefault();
         }
+        public void Remove(int WId)
+        {
+            Remove(GetWeddingById(WId));
+            SaveChanges();
+        }
         public void Remove(int WId, int GId)
         {
             Guest Invitee = Guests.Where(w => w.WeddingId == WId).Where(g => g.UserId == GId).FirstOrDefault();
