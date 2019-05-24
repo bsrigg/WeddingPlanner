@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using WeddingPlanner.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace WeddingPlanner.Controllers
@@ -43,7 +44,7 @@ namespace WeddingPlanner.Controllers
                 u.Password = RegisterHasher.HashPassword(u, u.Password);
                 int UserId = context.Create(u);
                 HttpContext.Session.SetInt32("UserId", UserId);
-                return Redirect("/success");
+                return Redirect("/events");
             }
             return View("Index");
         }
@@ -84,8 +85,8 @@ namespace WeddingPlanner.Controllers
             }
             else
             {
-
                 ViewBag.User = context.GetUserById((int)UserId);
+                ViewBag.Events = context.Weddings.Include(wed => wed.Event).ToList();
                 return View();
             }
         }
@@ -96,6 +97,55 @@ namespace WeddingPlanner.Controllers
         {
             HttpContext.Session.Clear();
             return Redirect("/");
+        }
+
+        [Route("events/new")]
+        [HttpGet]
+        public IActionResult NewEvents()
+        {
+            return View();
+        }
+
+        [Route("event")]
+        [HttpPost]
+        public IActionResult CreateEvent(Wedding w)
+        {
+            int? UserId = HttpContext.Session.GetInt32("UserId");
+            if(ModelState.IsValid)
+            {
+                w.PlannerId = (int) UserId;
+                context.Create(w);
+            }
+            return Redirect("/events");
+        }
+
+        [Route("join/{WeddingId}")]
+        [HttpGet]
+        public IActionResult RSVP(int WeddingId)
+        {
+            int? UserId = HttpContext.Session.GetInt32("UserId");
+            Guest g = new Guest();
+            g.WeddingId = WeddingId;
+            g.UserId = (int)UserId;
+            context.Create(g);
+            return Redirect("/events");
+        }
+
+        [Route("leave/{WeddingId}")]
+        [HttpGet]
+        public IActionResult UnRSVP(int WeddingId)
+        {
+            int? UserId = HttpContext.Session.GetInt32("UserId");
+            context.Remove(WeddingId, (int)UserId);
+            return Redirect("/events");
+        }
+
+        [Route("delete/{WeddingId}")]
+        [HttpPost]
+        public IActionResult Delete(int WeddingId)
+        {
+            context.Remove(WeddingId);
+            return Redirect("/events");
         }
 
     }
