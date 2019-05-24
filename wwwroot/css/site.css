@@ -1,0 +1,68 @@
+﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification\ 
+for details on configuring this project to bundle and minify static web assets. */
+body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+/* Wrapping element */
+/* Set some basic padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Carousel */
+.carousel-caption p {
+    font-size: 20px;
+    line-height: 1.4;
+}
+
+/* Make .svg files in the carousel display properly in older browsers */
+.carousel-inner .item img[src$=".svg"] {
+    width: 100%;
+}
+
+/* QR code generator */
+#qrCode {
+    margin: 15px;
+}
+
+/* Hide/rearrange for smaller screens */
+@media screen and (max-width: 767px) {
+    /* Hide captions */
+    .carousel-caption {
+        display: none;
+    }
+}
+.errors{
+    animation: jump 1s infinite;  
+}
+@keyframes jump {
+    0% {color: Red}
+    25% {color: rgb(245, 32, 32)}
+    50% {color:  rgb(245, 91, 91)}
+    75% {color:  rgb(247, 144, 144)}
+    100% {color:  rgb(236, 203, 13)}
+}
+.success{
+    font-size: 30px;
+    animation: reward 5s infinite;
+}
+@keyframes reward {
+    0% {color: green}
+    25% {color: blue}
+    35% {color: purple}
+    50% {color: red}
+    75% {color: orangered}
+    85% {color: yellow}
+    100% {color: yellowgreen}
+}
+my-custom-scrollbar {
+position: relative;
+height: 200px;
+overflow: auto;
+}
+.table-wrapper-scroll-y {
+display: block;
+}
